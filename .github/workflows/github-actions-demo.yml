@@ -12,7 +12,7 @@ defaults:
 
 jobs:
   init:
-    name: init
+    name: Init Job
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -29,7 +29,6 @@ jobs:
 
   login_aws_ecr:
     name: Login, Build, Deploy to Amazon ECR
-    id: login-ecr
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
