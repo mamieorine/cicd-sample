@@ -17,8 +17,8 @@ defaults:
     shell: bash
 
 jobs:
-  build:
-    name: build
+  init:
+    name: init
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -32,30 +32,25 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  deploy:
-    name: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-    # - name: Login to Amazon ECR
-    #   id: login-ecr
-    #   uses: aws-actions/amazon-ecr-login@v1
 
-    # - name: Build, tag, and push image to Amazon ECR
-    #   env:
-    #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-    #     ECR_REPOSITORY: my-ecr-repo
-    #     IMAGE_TAG: ${{ github.sha }}
-    #   run: |
-    #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-    #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  login_aws_ecr:
+    name: Login, Build, Deploy to Amazon ECR
+    id: login-ecr
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - run: echo "🎉 login to Amazon ECR success"
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest .
+          docker push 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
+      - run: echo "🎉 Build, tag and deploy to Amazon ECR success"
