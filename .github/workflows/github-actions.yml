@@ -50,9 +50,6 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest .
-<<<<<<< HEAD
-          docker push 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
-=======
           docker push 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
 
       - name: Configure SSH
@@ -83,4 +80,3 @@ jobs:
       # - name: Start the server
       #   if: ${{ always() }}
       #   run: docker run -it -p 8080:80 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
->>>>>>> 📦  test 🐱
