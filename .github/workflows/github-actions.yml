@@ -43,23 +43,23 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - run: echo "🎉 login to Amazon ECR success"
 
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest .
-          docker push 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
+      # - name: Build, tag, and push image to Amazon ECR
+      #   id: build-image
+      #   env:
+      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     IMAGE_TAG: ${{ github.sha }}
+      #   run: |
+      #     docker build -t 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest .
+      #     docker push 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
 
       - name: Configure SSH
-        uses: appleboy/ssh-action@master
+        uses: garygrossgarten/github-action-ssh@v0.6.3
         with:
+          command: ls -a
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          username: ubuntu
+          privateKey: ${{ secrets.SSH_KEY }}
           port: 22
-          script: whoami
 
       # env:
       # SSH_USER: ${{ secrets.STAGING_SSH_USER }}
