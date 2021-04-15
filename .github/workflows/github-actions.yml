@@ -50,4 +50,37 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest .
+<<<<<<< HEAD
           docker push 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
+=======
+          docker push 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
+
+      - name: Configure SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: whoami
+
+      # env:
+      # SSH_USER: ${{ secrets.STAGING_SSH_USER }}
+      # SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+      # SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+
+      # - name: Stop the server
+      #   run: ssh dev 'docker stop $(docker ps -a -q)'
+
+      # - name: Login to Amazon ECR
+      #   id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v1
+      # - run: echo "🎉 login to Amazon ECR success"
+
+      # - name: Pull new image
+      #   run: docker pull 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
+
+      # - name: Start the server
+      #   if: ${{ always() }}
+      #   run: docker run -it -p 8080:80 522027946869.dkr.ecr.ap-southeast-1.amazonaws.com/cicd-test:latest
+>>>>>>> 📦  test 🐱
