@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 env:
   AWS_REGION: ap-southeast-1
@@ -14,9 +17,16 @@ defaults:
     shell: bash
 
 jobs:
+  run_test:
+    name: Unit test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Run unit test"
+
   login_aws_ecr:
     name: Login, Build, Deploy to Amazon ECR
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
